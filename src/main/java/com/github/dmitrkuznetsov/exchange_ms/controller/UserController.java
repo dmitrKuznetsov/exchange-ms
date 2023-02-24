@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class UserController {
 
-    @GetMapping
-    public ResponseEntity<String> sayHello() {
-        return ResponseEntity.ok("Hello from our API");
-    }
+  @GetMapping
+  public ResponseEntity<String> sayHello() {
+    return ResponseEntity.ok("Hello from our API");
+  }
 
-    @GetMapping("/say-good-bye")
-    public ResponseEntity<String> sayGoodBye() {
-        return ResponseEntity.ok("Good bye and see you later");
-    }
+  @GetMapping("/say-good-bye")
+  public ResponseEntity<String> sayGoodBye() {
+    return ResponseEntity.ok("Good bye and see you later");
+  }
 }

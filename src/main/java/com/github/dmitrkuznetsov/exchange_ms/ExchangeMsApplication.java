@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ExchangeMsApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ExchangeMsApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(ExchangeMsApplication.class, args);
+  }
 }

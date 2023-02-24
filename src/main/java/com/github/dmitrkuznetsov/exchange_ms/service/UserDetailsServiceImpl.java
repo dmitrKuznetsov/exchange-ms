@@ -10,9 +10,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserDetailsRepository userDetailsRepository;
-    @Override
-    public UserDetails loadUserByUsername(String username) {
-        return userDetailsRepository.loadUserByEmail(username);
-    }
+  private final UserDetailsRepository userDetailsRepository;
+
+  @Override
+  public UserDetails loadUserByUsername(String username) {
+    return userDetailsRepository.loadUserByEmail(username);
+  }
+
+
 }

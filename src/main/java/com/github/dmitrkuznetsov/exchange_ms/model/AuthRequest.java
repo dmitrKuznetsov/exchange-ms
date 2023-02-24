@@ -1,4 +1,4 @@
-package com.github.dmitrkuznetsov.exchange_ms.dto;
+package com.github.dmitrkuznetsov.exchange_ms.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AuthRequest {
 
-    private String email;
-    private String password;
+  private String email;
+  private String password;
 }
