@@ -1,5 +1,6 @@
 package com.github.dmitrkuznetsov.exchange_ms.repository;
 
+import com.github.dmitrkuznetsov.exchange_ms.model.AuthRequest;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,5 +34,18 @@ public class UserDetailsRepository {
         .filter(u -> u.getUsername().equals(email))
         .findFirst()
         .orElseThrow(() -> new UsernameNotFoundException("No user was found"));
+  }
+
+  public UserDetails addUserDetails(AuthRequest authRequest) {
+
+    UserDetails details = new User(
+        authRequest.getEmail(),
+        authRequest.getPassword(),
+        Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"))
+    );
+
+    APPLICATION_USERS.add(details);
+
+    return details;
   }
 }

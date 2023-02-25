@@ -2,27 +2,28 @@ package com.github.dmitrkuznetsov.exchange_ms.controller;
 
 import com.github.dmitrkuznetsov.exchange_ms.config.JwtUtils;
 import com.github.dmitrkuznetsov.exchange_ms.model.AuthRequest;
-import com.github.dmitrkuznetsov.exchange_ms.model.RegisterRequest;
+import com.github.dmitrkuznetsov.exchange_ms.model.AuthResponse;
+import com.github.dmitrkuznetsov.exchange_ms.service.MyUserDetailsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
 
   private final AuthenticationManager authenticationManager;
-  private final UserDetailsService userDetailsService;
+  private final MyUserDetailsService userDetailsService;
   private final JwtUtils jwtUtils;
 
   @PostMapping("/auth")
-  public ResponseEntity<String> authenticate(
+  public AuthResponse authenticate(
       @RequestBody AuthRequest request
   ) {
     authenticationManager.authenticate(
@@ -36,16 +37,16 @@ public class AuthController {
         request.getEmail()
     );
 
-    if (userDetails != null) {
-      return ResponseEntity.ok(jwtUtils.generateToken(userDetails));
+    if (userDetails == null) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
-    return ResponseEntity.status(400).body("Some error has occurred");
+    return new AuthResponse(jwtUtils.generateToken(userDetails));
   }
 
   @PostMapping("/register")
-  public ResponseEntity<String> register(
-      @RequestBody RegisterRequest request
+  public AuthResponse register(
+      @RequestBody AuthRequest request
   ) {
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(
@@ -54,14 +55,16 @@ public class AuthController {
         )
     );
 
-    final UserDetails userDetails = userDetailsService.loadUserByUsername(
+    UserDetails userDetails = userDetailsService.loadUserByUsername(
         request.getEmail()
     );
 
     if (userDetails != null) {
-      return ResponseEntity.ok(jwtUtils.generateToken(userDetails));
+      throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
 
-    return ResponseEntity.status(400).body("Some error has occurred");
+    userDetails = userDetailsService.addUserDetails(request);
+
+    return new AuthResponse(jwtUtils.generateToken(userDetails));
   }
 }

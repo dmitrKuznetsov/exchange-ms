@@ -1,14 +1,14 @@
 package com.github.dmitrkuznetsov.exchange_ms.service;
 
+import com.github.dmitrkuznetsov.exchange_ms.model.AuthRequest;
 import com.github.dmitrkuznetsov.exchange_ms.repository.UserDetailsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class MyUserDetailsServiceImpl implements MyUserDetailsService {
 
   private final UserDetailsRepository userDetailsRepository;
 
@@ -17,5 +17,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     return userDetailsRepository.loadUserByEmail(username);
   }
 
-
+  @Override
+  public UserDetails addUserDetails(AuthRequest authRequest) {
+    return userDetailsRepository.addUserDetails(authRequest);
+  }
 }
