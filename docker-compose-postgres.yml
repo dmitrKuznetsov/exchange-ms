@@ -5,9 +5,9 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: exchange-mc-user
-      POSTGRES_PASSWORD: exchange-mc-pass
-      POSTGRES_DB: exchange-mc-db
+      POSTGRES_USER: exchange-ms-user
+      POSTGRES_PASSWORD: exchange-ms-pass
+      POSTGRES_DB: exchange-ms-db
     ports:
       - "5432:5432"
   pgadmin:

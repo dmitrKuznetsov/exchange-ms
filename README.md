@@ -16,8 +16,8 @@ docker-compose -f docker-compose-postgres.yml -p exchange-ms-postgres up -d
    Password: root
 3. Register server:
    Host name: <Docker IP>  
-   Username: exchange-mc-user  
-   Password: exchange-mc-pass  
+   Username: exchange-ms-user  
+   Password: exchange-ms-pass  
 
 
 

@@ -1,9 +1,12 @@
 package com.github.dmitrkuznetsov.exchange_ms.model;
 
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-@RequiredArgsConstructor
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuthResponse {
 
-  private final String token;
+  private String token;
 }

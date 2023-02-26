@@ -4,24 +4,22 @@ import com.github.dmitrkuznetsov.exchange_ms.model.Fund;
 import com.github.dmitrkuznetsov.exchange_ms.model.WithdrawCryptoRequest;
 import com.github.dmitrkuznetsov.exchange_ms.model.WithdrawRequest;
 import com.github.dmitrkuznetsov.exchange_ms.model.enums.Currency;
-import com.github.dmitrkuznetsov.exchange_ms.service.UserWalletService;
+import com.github.dmitrkuznetsov.exchange_ms.service.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 public class UserController {
 
-  private final UserWalletService userWalletService;
+//  private final UserWalletService userWalletService;
+  private final JwtService jwtService;
 
   @GetMapping("/balance")
-  public Fund[] balanceWallet() {
+  public String balanceWallet(@RequestHeader(name = "Authorization") String authHeader) {
     Fund[] funds = {};
-    return funds;
+    return jwtService.handleAuthHeader(authHeader);
   }
 
   @PostMapping("/top-up")
