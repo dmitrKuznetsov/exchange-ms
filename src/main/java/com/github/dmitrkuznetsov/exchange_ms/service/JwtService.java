@@ -21,10 +21,6 @@ public class JwtService {
   // https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx
   private final String SECRET_KEY = "7A24432646294A404E635266556A586E327235753778214125442A472D4B6150";
 
-  public String handleAuthHeader(String authHeader) {
-    return extractUsername(authHeader.substring(7));
-  }
-
   public String extractUsername(String token) {
     return extractClaim(token, Claims::getSubject);
   }

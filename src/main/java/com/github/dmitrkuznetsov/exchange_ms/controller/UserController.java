@@ -1,30 +1,37 @@
 package com.github.dmitrkuznetsov.exchange_ms.controller;
 
-import com.github.dmitrkuznetsov.exchange_ms.model.Fund;
-import com.github.dmitrkuznetsov.exchange_ms.model.WithdrawCryptoRequest;
-import com.github.dmitrkuznetsov.exchange_ms.model.WithdrawRequest;
-import com.github.dmitrkuznetsov.exchange_ms.model.enums.Currency;
-import com.github.dmitrkuznetsov.exchange_ms.service.JwtService;
+import com.github.dmitrkuznetsov.exchange_ms.dto.Fund;
+import com.github.dmitrkuznetsov.exchange_ms.dto.WithdrawCryptoRequest;
+import com.github.dmitrkuznetsov.exchange_ms.dto.WithdrawRequest;
+import com.github.dmitrkuznetsov.exchange_ms.dto.enums.Currency;
+import com.github.dmitrkuznetsov.exchange_ms.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 public class UserController {
 
-//  private final UserWalletService userWalletService;
-  private final JwtService jwtService;
+  private final UserService userService;
 
   @GetMapping("/balance")
-  public String balanceWallet(@RequestHeader(name = "Authorization") String authHeader) {
-    Fund[] funds = {};
-    return jwtService.handleAuthHeader(authHeader);
+  public List<Fund> balance(
+      @RequestHeader(name = "Authorization") String authHeader
+  ) {
+
+    return userService.getBalance(authHeader);
   }
 
   @PostMapping("/top-up")
-  public Fund topUpWallet(Fund fund) {
-    return fund;
+  public List<Fund> topUp(
+      @RequestHeader(name = "Authorization") String authHeader,
+      Fund fund
+  ) {
+
+    return userService.topUpWallet(authHeader, fund);
   }
 
   @PostMapping("/withdraw")

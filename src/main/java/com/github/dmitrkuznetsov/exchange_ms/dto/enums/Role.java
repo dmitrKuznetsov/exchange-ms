@@ -1,4 +1,4 @@
-package com.github.dmitrkuznetsov.exchange_ms.model.enums;
+package com.github.dmitrkuznetsov.exchange_ms.dto.enums;
 
 import org.springframework.security.core.GrantedAuthority;
 

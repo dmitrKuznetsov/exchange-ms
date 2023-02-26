@@ -1,16 +1,19 @@
 package com.github.dmitrkuznetsov.exchange_ms.service;
 
-import com.github.dmitrkuznetsov.exchange_ms.model.AuthRequest;
-import com.github.dmitrkuznetsov.exchange_ms.model.AuthResponse;
-import com.github.dmitrkuznetsov.exchange_ms.model.enums.Role;
+import com.github.dmitrkuznetsov.exchange_ms.dto.AuthRequest;
+import com.github.dmitrkuznetsov.exchange_ms.dto.AuthResponse;
+import com.github.dmitrkuznetsov.exchange_ms.dto.enums.Currency;
+import com.github.dmitrkuznetsov.exchange_ms.dto.enums.Role;
+import com.github.dmitrkuznetsov.exchange_ms.exception.UserAlreadyExistException;
+import com.github.dmitrkuznetsov.exchange_ms.exception.UserNotFoundException;
 import com.github.dmitrkuznetsov.exchange_ms.repository.entity.User;
+import com.github.dmitrkuznetsov.exchange_ms.repository.entity.Wallet;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+
 
 @Service
 @RequiredArgsConstructor
@@ -24,13 +27,25 @@ public class AuthServiceImpl implements AuthService {
   @Override
   public AuthResponse register(AuthRequest request) {
 
-    User user = User.builder()
-        .email(request.getEmail())
-        .password(passwordEncoder.encode(request.getPassword()))
-        .role(Role.USER)
-        .build();
+    String email = request.getEmail();
 
-    userService.save(user);
+    User user = userService.loadUserByUsername(email);
+
+    if (user == null) {
+      user = User.builder()
+          .email(email)
+          .password(passwordEncoder.encode(request.getPassword()))
+          .role(Role.USER)
+          .build();
+
+      user.addWallet(new Wallet(0, Currency.RUB, 0));
+      user.addWallet(new Wallet(0, Currency.BTC, 0));
+      user.addWallet(new Wallet(0, Currency.TON, 0));
+    } else {
+      throw new UserAlreadyExistException(email);
+    }
+
+    userService.saveUser(user);
 
     String jwtToken = jwtService.generateToken(user);
 
@@ -39,20 +54,20 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public AuthResponse authenticate(AuthRequest request) {
+
+    String email = request.getEmail();
+
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(
-            request.getEmail(),
+            email,
             request.getPassword()
         )
     );
 
-    User user = userService.loadUserByUsername(
-        request.getEmail()
-    );
+    User user = userService.loadUserByUsername(email);
 
-    if (user == null) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
+    if (user == null)
+      throw new UserNotFoundException();
 
     return new AuthResponse(jwtService.generateToken(user));
   }

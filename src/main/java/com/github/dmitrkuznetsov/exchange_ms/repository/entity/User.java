@@ -1,15 +1,14 @@
 package com.github.dmitrkuznetsov.exchange_ms.repository.entity;
 
-import com.github.dmitrkuznetsov.exchange_ms.model.enums.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.github.dmitrkuznetsov.exchange_ms.dto.enums.Role;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,6 +30,19 @@ public class User implements UserDetails {
 
   @Enumerated(EnumType.STRING)
   private Role role;
+
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "user_id")
+  @ToString.Exclude
+  private List<Wallet> wallets;
+
+  public void addWallet(Wallet wallet) {
+    if (wallets == null) {
+      wallets = new ArrayList<>();
+    }
+
+    wallets.add(wallet);
+  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
