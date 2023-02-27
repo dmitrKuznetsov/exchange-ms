@@ -10,16 +10,19 @@ For starting database run command:
 docker-compose -f docker-compose-postgres.yml -p exchange-ms-postgres up -d
 ```
 
-### Access to pgAdmin
+### Access to pgAdmin (to observe PostgreSQL database state)
 1. Visit: http://localhost:5050/browser/
 2. Login: admin@admin.com  
    Password: root
-3. Register server:
-   Host name: <Docker IP>  
-   Username: exchange-ms-user  
-   Password: exchange-ms-pass  
-
-
+3. Register server\
+   Host name: "PostgreSQL container IP"\
+   Username: exchange-ms-user\
+   Password: exchange-ms-pass
+   
+You can get PostgreSQL container IP using:
+```bash
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' pg_container
+```
 
 # Technological stack
 - SpringBoot as a skeleton framework

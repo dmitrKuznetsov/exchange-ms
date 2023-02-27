@@ -8,5 +8,5 @@ import lombok.*;
 @AllArgsConstructor
 public class WithdrawCryptoRequest {
   private Fund fund;
-  private String creditCard;
+  private String wallet;
 }

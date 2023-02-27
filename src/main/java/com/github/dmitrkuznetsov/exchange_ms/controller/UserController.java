@@ -28,22 +28,27 @@ public class UserController {
   @PostMapping("/top-up")
   public List<Fund> topUp(
       @RequestHeader(name = "Authorization") String authHeader,
-      Fund fund
+      @RequestBody Fund fund
   ) {
 
     return userService.topUpWallet(authHeader, fund);
   }
 
   @PostMapping("/withdraw")
-  public Fund withdrawWallet(WithdrawRequest request) {
+  public List<Fund> withdraw(
+      @RequestHeader(name = "Authorization") String authHeader,
+      @RequestBody WithdrawRequest request
+  ) {
 
-    return new Fund();
+    return userService.withdraw(authHeader, request);
   }
 
   @PostMapping("/withdraw-crypto")
-  public Fund withdrawWallet(WithdrawCryptoRequest request) {
+  public List<Fund> withdrawCrypto(
+      @RequestHeader(name = "Authorization") String authHeader,
+      @RequestBody WithdrawCryptoRequest request) {
 
-    return new Fund();
+    return userService.withdrawCrypto(authHeader, request);
   }
 
   @GetMapping("/exchange-rate")

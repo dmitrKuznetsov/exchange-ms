@@ -9,5 +9,5 @@ import lombok.*;
 public class WithdrawRequest {
 
   private Fund fund;
-  private String wallet;
+  private String creditCard;
 }

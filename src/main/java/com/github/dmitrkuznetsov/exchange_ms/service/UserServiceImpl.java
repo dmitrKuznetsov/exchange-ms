@@ -1,21 +1,22 @@
 package com.github.dmitrkuznetsov.exchange_ms.service;
 
 import com.github.dmitrkuznetsov.exchange_ms.dto.Fund;
-import com.github.dmitrkuznetsov.exchange_ms.dto.enums.Currency;
+import com.github.dmitrkuznetsov.exchange_ms.dto.WithdrawCryptoRequest;
+import com.github.dmitrkuznetsov.exchange_ms.dto.WithdrawRequest;
 import com.github.dmitrkuznetsov.exchange_ms.exception.UserNotFoundException;
 import com.github.dmitrkuznetsov.exchange_ms.repository.UserRepository;
 import com.github.dmitrkuznetsov.exchange_ms.repository.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-  //todo database
-  private final Map<String, List<Fund>> walletsMap = new HashMap<>();
   private final UserRepository userRepository;
   private final JwtService jwtService;
 
@@ -31,14 +32,8 @@ public class UserServiceImpl implements UserService {
     );
   }
 
+  @Override
   public User saveUser(User user) {
-    List<Fund> funds = Arrays.asList(
-        new Fund(Currency.RUB, 0),
-        new Fund(Currency.BTC, 0),
-        new Fund(Currency.TON, 0)
-    );
-
-    walletsMap.put(user.getEmail(), funds);
     return userRepository.save(user);
   }
 
@@ -49,11 +44,19 @@ public class UserServiceImpl implements UserService {
     if (user == null)
       throw new UserNotFoundException();
 
-    return walletsMap.get(user.getEmail());
+    List<Fund> funds = user.getWallets().stream().
+        map(wallet -> new Fund(wallet.getCurrency(), wallet.getCount()))
+        .collect(Collectors.toList());
+
+    return funds;
   }
 
   @Override
-  public List<Fund> topUpWallet(String authHeader, Fund payment) throws UserNotFoundException {
+  @Transactional
+  public List<Fund> topUpWallet(
+      String authHeader,
+      Fund payment
+  ) throws UserNotFoundException {
 
     User user = loadUserByAuthHeader(authHeader);
 
@@ -61,23 +64,45 @@ public class UserServiceImpl implements UserService {
       throw new UserNotFoundException();
     }
 
-    String email = user.getEmail();
+    user.topUpWallet(payment);
 
-    List<Fund> balance = walletsMap.get(email);
+    return getBalance(authHeader);
+  }
 
-    Fund wallet = balance.stream()
-        .filter(balanceEl ->
-            balanceEl.getCurrency().equals(payment.getCurrency())
-        )
-        .findFirst()
-        .orElse(null);
+  @Override
+  @Transactional
+  public List<Fund> withdraw(String authHeader, WithdrawRequest request) {
 
-    if (wallet == null) {
-      balance.add(payment);
-    } else {
-      wallet.setCount(wallet.getCount() + payment.getCount());
+    User user = loadUserByAuthHeader(authHeader);
+
+    if (user == null) {
+      throw new UserNotFoundException();
     }
 
-    return walletsMap.get(email);
+    user.withdraw(request.getFund());
+
+    // ------------------------------------------
+    // Some business logic for transfer operation
+    // ------------------------------------------
+
+    return getBalance(authHeader);
+  }
+
+  @Override
+  @Transactional
+  public List<Fund> withdrawCrypto(String authHeader, WithdrawCryptoRequest request) {
+    User user = loadUserByAuthHeader(authHeader);
+
+    if (user == null) {
+      throw new UserNotFoundException();
+    }
+
+    user.withdraw(request.getFund());
+
+    // ------------------------------------------
+    // Some business logic for CRYPTO transfer operation
+    // ------------------------------------------
+
+    return getBalance(authHeader);
   }
 }

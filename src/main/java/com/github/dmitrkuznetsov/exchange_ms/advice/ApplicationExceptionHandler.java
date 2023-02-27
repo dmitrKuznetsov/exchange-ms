@@ -1,5 +1,6 @@
 package com.github.dmitrkuznetsov.exchange_ms.advice;
 
+import com.github.dmitrkuznetsov.exchange_ms.exception.NotEnoughMoney;
 import com.github.dmitrkuznetsov.exchange_ms.exception.UserAlreadyExistException;
 import com.github.dmitrkuznetsov.exchange_ms.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public Map<String, String> handleBusinessException(UserNotFoundException ex) {
         Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("errorMessage", ex.getMessage());
+        errorMap.put("message", ex.getMessage());
         return errorMap;
     }
 
@@ -37,7 +38,15 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler(UserAlreadyExistException.class)
     public Map<String, String> handleBusinessException(UserAlreadyExistException ex) {
         Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("errorMessage", ex.getMessage());
+        errorMap.put("message", ex.getMessage());
+        return errorMap;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NotEnoughMoney.class)
+    public Map<String, String> handleBusinessException(NotEnoughMoney ex) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put("message", ex.getMessage());
         return errorMap;
     }
 }

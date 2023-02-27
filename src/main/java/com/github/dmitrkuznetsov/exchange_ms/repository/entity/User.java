@@ -1,5 +1,7 @@
 package com.github.dmitrkuznetsov.exchange_ms.repository.entity;
 
+import com.github.dmitrkuznetsov.exchange_ms.dto.Fund;
+import com.github.dmitrkuznetsov.exchange_ms.dto.enums.Currency;
 import com.github.dmitrkuznetsov.exchange_ms.dto.enums.Role;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -43,6 +45,33 @@ public class User implements UserDetails {
 
     wallets.add(wallet);
   }
+  public void topUpWallet(Fund payment) {
+
+    Wallet currentWallet = getWallet(payment.getCurrency());
+
+    if (currentWallet == null) {
+      addWallet(new Wallet(0, payment.getCurrency(), payment.getCount()));
+    } else {
+      currentWallet.topUp(payment.getCount());
+    }
+  }
+
+  public void withdraw(Fund fund) {
+    Wallet currentWallet = getWallet(fund.getCurrency());
+
+    if (currentWallet != null) {
+      currentWallet.withdraw(fund.getCount());
+    }
+  }
+
+  private Wallet getWallet(Currency currency) {
+    return wallets.stream()
+        .filter(wallet ->
+            wallet.getCurrency().equals(currency)
+        )
+        .findFirst()
+        .orElse(null);
+  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -78,4 +107,5 @@ public class User implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
+
 }
