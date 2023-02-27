@@ -1,7 +1,6 @@
 package com.github.dmitrkuznetsov.exchange_ms.repository.entity;
 
 import com.github.dmitrkuznetsov.exchange_ms.dto.enums.Currency;
-import com.github.dmitrkuznetsov.exchange_ms.exception.NotEnoughMoney;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,26 +12,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "wallet")
-public class Wallet {
+@Table(name = "exchange_rate")
+public class ExchangeRate {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private int id;
+  private Integer id;
 
   @Enumerated(EnumType.STRING)
-  private Currency currency;
+  private Currency currencyFrom;
 
-  private double count;
+  @Enumerated(EnumType.STRING)
+  private Currency currencyTo;
 
-  public void topUp(double payment) {
-    count = count + payment;
-  }
-
-  public void withdraw(double money) {
-    if (count >= money) {
-      count = count - money;
-    } else
-      throw new NotEnoughMoney(currency);
-  }
+  private double rate;
 }

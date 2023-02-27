@@ -10,5 +10,5 @@ import lombok.*;
 public class Fund {
 
   private Currency currency;
-  private int count;
+  private double count;
 }
