@@ -1,4 +1,12 @@
-truncate table exchange_rate;
+drop table IF EXISTS exchange_rate;
+
+create table exchange_rate
+(
+    currency_from varchar(255) not null,
+    currency_to   varchar(255) not null,
+    rate          float(53)    not null,
+    primary key (currency_from, currency_to)
+);
 
 insert into exchange_rate values ('RUB', 'TON', 0.0055);
 insert into exchange_rate values ('RUB', 'BTC', 0.000000568);
