@@ -16,8 +16,8 @@ docker-compose -f docker-compose-postgres.yml -p exchange-ms-postgres up -d
    Password: root
 3. Register server\
    Host name: "PostgreSQL container IP"\
-   Username: exchange-ms-user\
-   Password: exchange-ms-pass
+   Username: admin\
+   Password: admin
    
 You can get PostgreSQL container IP using:
 ```bash

@@ -1,10 +1,12 @@
+drop table if exists operation;
+drop sequence if exists operation_seq;
+
 create table operation
 (
     id      integer not null,
-    date    timestamp(6),
     type    varchar(255),
-    user_id integer,
+    date    date,
     primary key (id)
-)
+);
 
-alter table if exists operation add constraint operation_fk_constraint foreign key (user_id) references _user
+create sequence operation_seq start with 1 increment by 50;

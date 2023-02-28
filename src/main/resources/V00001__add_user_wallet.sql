@@ -1,9 +1,9 @@
-drop table IF EXISTS wallet;
-drop table IF EXISTS _user;
+drop table if exists wallet;
+drop table if exists _user;
 
 
-drop sequence IF EXISTS wallet_seq;
-drop sequence IF EXISTS _user_seq;
+drop sequence if exists wallet_seq;
+drop sequence if exists _user_seq;
 
 
 create table _user

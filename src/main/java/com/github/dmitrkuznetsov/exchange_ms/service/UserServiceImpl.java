@@ -17,7 +17,6 @@ public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
   private final JwtService jwtService;
-
   private final ExchangeService exchangeService;
 
   @Override

@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -21,17 +21,13 @@ public class Operation {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
-  private LocalDateTime date;
-
   @Enumerated(EnumType.STRING)
   private OperationType type;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "user_id")
-  private User user;
+  private LocalDate date;
 
-  @PrePersist
-  private void init() {
-    date = LocalDateTime.now();
+  public Operation(OperationType type) {
+    this.type = type;
+    this.date = LocalDate.now();
   }
 }
