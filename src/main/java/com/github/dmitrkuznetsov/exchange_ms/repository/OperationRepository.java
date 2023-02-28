@@ -7,5 +7,5 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface OperationRepository extends JpaRepository<Operation, Integer> {
-  List<Operation> findByDateAfterAndDateBefore(LocalDate dateAfter, LocalDate dateBefore);
+  List<Operation> findByDateBetween(LocalDate dateAfter, LocalDate dateBefore);
 }

@@ -41,15 +41,9 @@ public class AdminController {
 
   @GetMapping("/operation-count")
   public OperationCountResponse operationCount(
-      @RequestParam("dateFrom")
-      @DateTimeFormat(pattern = "dd:mm:yyyy")
-      Date dateFrom,
-      @RequestParam("dateTo")
-      @DateTimeFormat(pattern = "dd:mm:yyyy")
-      Date dateTo
+      @RequestParam("dateFrom") @DateTimeFormat(pattern = "dd:MM:yyyy") Date dateFrom,
+      @RequestParam("dateTo") @DateTimeFormat(pattern = "dd:MM:yyyy") Date dateTo
   ) {
-
-
 
     LocalDate localDateFrom = dateFrom.toInstant()
         .atZone(ZoneId.systemDefault())
@@ -58,9 +52,6 @@ public class AdminController {
     LocalDate localDateTo = dateTo.toInstant()
         .atZone(ZoneId.systemDefault())
         .toLocalDate();
-
-    System.out.println(localDateFrom);
-    System.out.println(localDateTo);
 
     int count = adminService.getOperationCount(localDateFrom, localDateTo);
 

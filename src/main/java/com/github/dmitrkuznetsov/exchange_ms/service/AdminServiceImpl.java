@@ -35,7 +35,7 @@ public class AdminServiceImpl implements AdminService {
   public int getOperationCount(LocalDate dateFrom, LocalDate dateTo) {
 
     List<Operation> operations = operationRepository
-        .findByDateAfterAndDateBefore(dateFrom, dateTo);
+        .findByDateBetween(dateFrom, dateTo);
 
     return operations.size();
   }
