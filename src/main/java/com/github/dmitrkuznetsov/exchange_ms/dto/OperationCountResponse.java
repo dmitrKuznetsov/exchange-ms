@@ -2,13 +2,10 @@ package com.github.dmitrkuznetsov.exchange_ms.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class ConvertResponse {
+public class OperationCountResponse {
 
-  Money moneyFrom;
-  Money moneyTo;
+  private int count;
 }

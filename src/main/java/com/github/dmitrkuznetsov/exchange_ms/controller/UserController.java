@@ -19,7 +19,7 @@ public class UserController {
   private final ExchangeService exchangeService;
 
   @GetMapping("/balance")
-  public List<Fund> balance(
+  public List<Money> balance(
       @RequestHeader(name = "Authorization") String authHeader
   ) {
 
@@ -27,16 +27,16 @@ public class UserController {
   }
 
   @PostMapping("/top-up")
-  public List<Fund> topUp(
+  public List<Money> topUp(
       @RequestHeader(name = "Authorization") String authHeader,
-      @RequestBody Fund fund
+      @RequestBody Money money
   ) {
 
-    return userService.topUpWallet(authHeader, fund);
+    return userService.topUpWallet(authHeader, money);
   }
 
   @PostMapping("/withdraw")
-  public List<Fund> withdraw(
+  public List<Money> withdraw(
       @RequestHeader(name = "Authorization") String authHeader,
       @RequestBody WithdrawRequest request
   ) {
@@ -45,7 +45,7 @@ public class UserController {
   }
 
   @PostMapping("/withdraw-crypto")
-  public List<Fund> withdrawCrypto(
+  public List<Money> withdrawCrypto(
       @RequestHeader(name = "Authorization") String authHeader,
       @RequestBody WithdrawCryptoRequest request) {
 
@@ -53,7 +53,7 @@ public class UserController {
   }
 
   @GetMapping("/exchange-rate")
-  public List<Fund> exchangeRate(
+  public List<Money> getExchangeRate(
       @RequestParam("currency") Currency currency
   ) {
 

@@ -1,6 +1,6 @@
 package com.github.dmitrkuznetsov.exchange_ms.repository.entity;
 
-import com.github.dmitrkuznetsov.exchange_ms.dto.Fund;
+import com.github.dmitrkuznetsov.exchange_ms.dto.Money;
 import com.github.dmitrkuznetsov.exchange_ms.dto.enums.Currency;
 import com.github.dmitrkuznetsov.exchange_ms.dto.enums.Role;
 import lombok.*;
@@ -47,7 +47,7 @@ public class User implements UserDetails {
 
     wallets.add(wallet);
   }
-  public void topUpWallet(Fund payment) {
+  public void topUpWallet(Money payment) {
 
     Wallet currentWallet = getWallet(payment.getCurrency());
 
@@ -59,11 +59,11 @@ public class User implements UserDetails {
     }
   }
 
-  public void withdraw(Fund fund) {
-    Wallet currentWallet = getWallet(fund.getCurrency());
+  public void withdraw(Money money) {
+    Wallet currentWallet = getWallet(money.getCurrency());
 
     if (currentWallet != null) {
-      currentWallet.withdraw(fund.getCount());
+      currentWallet.withdraw(money.getCount());
     }
   }
 

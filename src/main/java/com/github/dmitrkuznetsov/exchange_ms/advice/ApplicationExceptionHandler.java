@@ -6,12 +6,14 @@ import com.github.dmitrkuznetsov.exchange_ms.exception.UnexpectedCurrencyRate;
 import com.github.dmitrkuznetsov.exchange_ms.exception.UserAlreadyExistException;
 import com.github.dmitrkuznetsov.exchange_ms.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
@@ -26,6 +28,19 @@ public class ApplicationExceptionHandler {
             errorMap.put(error.getField(), error.getDefaultMessage());
         });
         return errorMap;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ExceptionResponse handleInvalidArgument(HttpRequestMethodNotSupportedException ex) {
+
+        String[] supportedMethods = ex.getSupportedMethods();
+        if (supportedMethods == null) {
+            return new ExceptionResponse("Such request is not supported");
+        } else {
+            List<String> methods = List.of(supportedMethods);
+            return new ExceptionResponse("Such request supports only " + methods + " methods");
+        }
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)

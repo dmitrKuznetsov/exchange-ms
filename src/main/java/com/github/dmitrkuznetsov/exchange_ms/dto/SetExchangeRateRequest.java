@@ -3,13 +3,13 @@ package com.github.dmitrkuznetsov.exchange_ms.dto;
 import com.github.dmitrkuznetsov.exchange_ms.dto.enums.Currency;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class ConvertRequest {
+public class SetExchangeRateRequest {
 
-  private Money moneyFrom;
-  private Currency currencyTo;
+  private Currency baseCurrency;
+  private List<Money> rates;
 }

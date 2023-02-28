@@ -38,22 +38,22 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public List<Fund> getBalance(String authHeader) {
+  public List<Money> getBalance(String authHeader) {
     User user = loadUserByAuthHeader(authHeader);
 
     if (user == null)
       throw new UserNotFoundException();
 
     return user.getWallets().stream().
-        map(wallet -> new Fund(wallet.getCurrency(), wallet.getCount()))
+        map(wallet -> new Money(wallet.getCurrency(), wallet.getCount()))
         .collect(Collectors.toList());
   }
 
   @Override
   @Transactional
-  public List<Fund> topUpWallet(
+  public List<Money> topUpWallet(
       String authHeader,
-      Fund payment
+      Money payment
   ) throws UserNotFoundException {
 
     User user = loadUserByAuthHeader(authHeader);
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public List<Fund> withdraw(String authHeader, WithdrawRequest request) {
+  public List<Money> withdraw(String authHeader, WithdrawRequest request) {
 
     User user = loadUserByAuthHeader(authHeader);
 
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
       throw new UserNotFoundException();
     }
 
-    user.withdraw(request.getFund());
+    user.withdraw(request.getMoney());
 
     // ------------------------------------------
     // Some business logic for transfer operation
@@ -88,14 +88,14 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public List<Fund> withdrawCrypto(String authHeader, WithdrawCryptoRequest request) {
+  public List<Money> withdrawCrypto(String authHeader, WithdrawCryptoRequest request) {
     User user = loadUserByAuthHeader(authHeader);
 
     if (user == null) {
       throw new UserNotFoundException();
     }
 
-    user.withdraw(request.getFund());
+    user.withdraw(request.getMoney());
 
     // ------------------------------------------
     // Some business logic for CRYPTO transfer operation
@@ -113,12 +113,12 @@ public class UserServiceImpl implements UserService {
       throw new UserNotFoundException();
     }
 
-    user.withdraw(request.getFundFrom());
+    user.withdraw(request.getMoneyFrom());
 
-    Fund payment = exchangeService.convert(request);
+    Money payment = exchangeService.convert(request);
 
     user.topUpWallet(payment);
 
-    return new ConvertResponse(request.getFundFrom(), payment);
+    return new ConvertResponse(request.getMoneyFrom(), payment);
   }
 }

@@ -14,13 +14,13 @@ public interface UserService extends UserDetailsService {
 
   User saveUser(User user);
 
-  List<Fund> getBalance(String authHeader);
+  List<Money> getBalance(String authHeader);
 
-  List<Fund> topUpWallet(String authHeader, Fund fund);
+  List<Money> topUpWallet(String authHeader, Money money);
 
-  List<Fund> withdraw(String authHeader, WithdrawRequest request);
+  List<Money> withdraw(String authHeader, WithdrawRequest request);
 
-  List<Fund> withdrawCrypto(String authHeader, WithdrawCryptoRequest request);
+  List<Money> withdrawCrypto(String authHeader, WithdrawCryptoRequest request);
 
   ConvertResponse convertAndTopUp(String authHeader, ConvertRequest request);
 }

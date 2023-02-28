@@ -4,10 +4,9 @@ import com.github.dmitrkuznetsov.exchange_ms.dto.enums.Currency;
 import lombok.*;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Fund {
+public class Money {
 
   private Currency currency;
   private double count;
