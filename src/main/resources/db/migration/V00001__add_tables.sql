@@ -4,7 +4,6 @@ drop table IF EXISTS exchange_rate;
 
 drop sequence IF EXISTS wallet_seq;
 drop sequence IF EXISTS _user_seq;
-drop sequence IF EXISTS exchange_rate_seq;
 
 
 create table _user
@@ -18,11 +17,10 @@ create table _user
 
 create table exchange_rate
 (
-    id            integer   not null,
-    currency_from varchar(255),
-    currency_to   varchar(255),
-    rate          float(53) not null,
-    primary key (id)
+    currency_from varchar(255) not null,
+    currency_to   varchar(255) not null,
+    rate          float(53)    not null,
+    primary key (currency_from, currency_to)
 );
 
 create table wallet
@@ -35,6 +33,5 @@ create table wallet
 );
 
 create sequence _user_seq start with 1 increment by 50;
-create sequence exchange_rate_seq start with 1 increment by 50;
 create sequence wallet_seq start with 1 increment by 50;
 alter table if exists wallet add constraint wallet_fk_constraint foreign key (user_id) references _user;

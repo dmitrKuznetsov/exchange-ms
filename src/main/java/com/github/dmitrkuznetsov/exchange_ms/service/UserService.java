@@ -1,8 +1,6 @@
 package com.github.dmitrkuznetsov.exchange_ms.service;
 
-import com.github.dmitrkuznetsov.exchange_ms.dto.Fund;
-import com.github.dmitrkuznetsov.exchange_ms.dto.WithdrawCryptoRequest;
-import com.github.dmitrkuznetsov.exchange_ms.dto.WithdrawRequest;
+import com.github.dmitrkuznetsov.exchange_ms.dto.*;
 import com.github.dmitrkuznetsov.exchange_ms.repository.entity.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -23,4 +21,6 @@ public interface UserService extends UserDetailsService {
   List<Fund> withdraw(String authHeader, WithdrawRequest request);
 
   List<Fund> withdrawCrypto(String authHeader, WithdrawCryptoRequest request);
+
+  ConvertResponse convertAndTopUp(String authHeader, ConvertRequest request);
 }

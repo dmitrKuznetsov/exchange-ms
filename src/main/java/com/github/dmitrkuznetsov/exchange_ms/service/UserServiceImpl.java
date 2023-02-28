@@ -1,8 +1,6 @@
 package com.github.dmitrkuznetsov.exchange_ms.service;
 
-import com.github.dmitrkuznetsov.exchange_ms.dto.Fund;
-import com.github.dmitrkuznetsov.exchange_ms.dto.WithdrawCryptoRequest;
-import com.github.dmitrkuznetsov.exchange_ms.dto.WithdrawRequest;
+import com.github.dmitrkuznetsov.exchange_ms.dto.*;
 import com.github.dmitrkuznetsov.exchange_ms.exception.UserNotFoundException;
 import com.github.dmitrkuznetsov.exchange_ms.repository.UserRepository;
 import com.github.dmitrkuznetsov.exchange_ms.repository.entity.User;
@@ -19,6 +17,8 @@ public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
   private final JwtService jwtService;
+
+  private final ExchangeService exchangeService;
 
   @Override
   public User loadUserByUsername(String username) {
@@ -44,11 +44,9 @@ public class UserServiceImpl implements UserService {
     if (user == null)
       throw new UserNotFoundException();
 
-    List<Fund> funds = user.getWallets().stream().
+    return user.getWallets().stream().
         map(wallet -> new Fund(wallet.getCurrency(), wallet.getCount()))
         .collect(Collectors.toList());
-
-    return funds;
   }
 
   @Override
@@ -104,5 +102,23 @@ public class UserServiceImpl implements UserService {
     // ------------------------------------------
 
     return getBalance(authHeader);
+  }
+
+  @Override
+  @Transactional
+  public ConvertResponse convertAndTopUp(String authHeader, ConvertRequest request) {
+    User user = loadUserByAuthHeader(authHeader);
+
+    if (user == null) {
+      throw new UserNotFoundException();
+    }
+
+    user.withdraw(request.getFundFrom());
+
+    Fund payment = exchangeService.convert(request);
+
+    user.topUpWallet(payment);
+
+    return new ConvertResponse(request.getFundFrom(), payment);
   }
 }

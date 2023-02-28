@@ -4,6 +4,7 @@ import com.github.dmitrkuznetsov.exchange_ms.dto.Fund;
 import com.github.dmitrkuznetsov.exchange_ms.dto.enums.Currency;
 import com.github.dmitrkuznetsov.exchange_ms.dto.enums.Role;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "_user")
+@Slf4j
 public class User implements UserDetails {
 
   @Id
@@ -50,6 +52,7 @@ public class User implements UserDetails {
     Wallet currentWallet = getWallet(payment.getCurrency());
 
     if (currentWallet == null) {
+      log.warn("Unexpected behaviour");
       addWallet(new Wallet(0, payment.getCurrency(), payment.getCount()));
     } else {
       currentWallet.topUp(payment.getCount());

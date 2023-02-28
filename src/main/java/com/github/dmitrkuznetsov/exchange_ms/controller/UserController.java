@@ -1,9 +1,8 @@
 package com.github.dmitrkuznetsov.exchange_ms.controller;
 
-import com.github.dmitrkuznetsov.exchange_ms.dto.Fund;
-import com.github.dmitrkuznetsov.exchange_ms.dto.WithdrawCryptoRequest;
-import com.github.dmitrkuznetsov.exchange_ms.dto.WithdrawRequest;
+import com.github.dmitrkuznetsov.exchange_ms.dto.*;
 import com.github.dmitrkuznetsov.exchange_ms.dto.enums.Currency;
+import com.github.dmitrkuznetsov.exchange_ms.service.ExchangeService;
 import com.github.dmitrkuznetsov.exchange_ms.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +15,8 @@ import java.util.List;
 public class UserController {
 
   private final UserService userService;
+
+  private final ExchangeService exchangeService;
 
   @GetMapping("/balance")
   public List<Fund> balance(
@@ -52,8 +53,18 @@ public class UserController {
   }
 
   @GetMapping("/exchange-rate")
-  public Fund[] exchangeRate(Currency currency) {
-    Fund[] funds = {};
-    return funds;
+  public List<Fund> exchangeRate(
+      @RequestParam("currency") Currency currency
+  ) {
+
+    return exchangeService.getRate(currency);
+  }
+
+  @PostMapping("/convert")
+  public ConvertResponse convert(
+      @RequestHeader(name = "Authorization") String authHeader,
+      @RequestBody ConvertRequest request) {
+
+    return userService.convertAndTopUp(authHeader, request);
   }
 }

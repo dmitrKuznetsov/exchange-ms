@@ -1,6 +1,8 @@
 package com.github.dmitrkuznetsov.exchange_ms.advice;
 
+import com.github.dmitrkuznetsov.exchange_ms.dto.ExceptionResponse;
 import com.github.dmitrkuznetsov.exchange_ms.exception.NotEnoughMoney;
+import com.github.dmitrkuznetsov.exchange_ms.exception.UnexpectedCurrencyRate;
 import com.github.dmitrkuznetsov.exchange_ms.exception.UserAlreadyExistException;
 import com.github.dmitrkuznetsov.exchange_ms.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -28,25 +30,25 @@ public class ApplicationExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
-    public Map<String, String> handleBusinessException(UserNotFoundException ex) {
-        Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("message", ex.getMessage());
-        return errorMap;
+    public ExceptionResponse handleBusinessException(UserNotFoundException ex) {
+        return new ExceptionResponse(ex);
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(UserAlreadyExistException.class)
-    public Map<String, String> handleBusinessException(UserAlreadyExistException ex) {
-        Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("message", ex.getMessage());
-        return errorMap;
+    public ExceptionResponse handleBusinessException(UserAlreadyExistException ex) {
+        return new ExceptionResponse(ex);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NotEnoughMoney.class)
-    public Map<String, String> handleBusinessException(NotEnoughMoney ex) {
-        Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("message", ex.getMessage());
-        return errorMap;
+    public ExceptionResponse handleBusinessException(NotEnoughMoney ex) {
+        return new ExceptionResponse(ex);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(UnexpectedCurrencyRate.class)
+    public ExceptionResponse handleBusinessException(UnexpectedCurrencyRate ex) {
+        return new ExceptionResponse(ex);
     }
 }
