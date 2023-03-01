@@ -1,9 +1,11 @@
 package com.github.dmitrkuznetsov.exchange_ms.service;
 
 import com.github.dmitrkuznetsov.exchange_ms.dto.*;
+import com.github.dmitrkuznetsov.exchange_ms.dto.enums.Currency;
 import com.github.dmitrkuznetsov.exchange_ms.exception.UserNotFoundException;
 import com.github.dmitrkuznetsov.exchange_ms.repository.UserRepository;
 import com.github.dmitrkuznetsov.exchange_ms.repository.entity.User;
+import com.github.dmitrkuznetsov.exchange_ms.repository.entity.Wallet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,20 +39,23 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public List<Money> getBalance(String authHeader) {
+  public Map<Currency, Double> getBalance(String authHeader) {
     User user = loadUserByAuthHeader(authHeader);
 
     if (user == null)
       throw new UserNotFoundException();
 
-    return user.getWallets().stream().
-        map(wallet -> new Money(wallet.getCurrency(), wallet.getCount()))
-        .collect(Collectors.toList());
+    return user.getWallets().stream()
+        .collect(Collectors.toMap(
+            Wallet::getCurrency,
+            Wallet::getCount,
+            (a, b) -> b
+        ));
   }
 
   @Override
   @Transactional
-  public List<Money> topUpWallet(
+  public Map<Currency, Double> topUpWallet(
       String authHeader,
       Money payment
   ) throws UserNotFoundException {
@@ -68,15 +73,16 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public List<Money> withdraw(String authHeader, WithdrawRequest request) {
+  public Map<Currency, Double> withdraw(String authHeader, WithdrawRequest request) {
 
     User user = loadUserByAuthHeader(authHeader);
+    Money payment = new Money(request.getCurrency(), request.getCount());
 
     if (user == null) {
       throw new UserNotFoundException();
     }
 
-    user.withdraw(request.getMoney());
+    user.withdraw(payment);
 
     // ------------------------------------------
     // Some business logic for transfer operation
@@ -87,14 +93,15 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  public List<Money> withdrawCrypto(String authHeader, WithdrawCryptoRequest request) {
+  public Map<Currency, Double> withdrawCrypto(String authHeader, WithdrawCryptoRequest request) {
     User user = loadUserByAuthHeader(authHeader);
+    Money payment = new Money(request.getCurrency(), request.getCount());
 
     if (user == null) {
       throw new UserNotFoundException();
     }
 
-    user.withdraw(request.getMoney());
+    user.withdraw(payment);
 
     // ------------------------------------------
     // Some business logic for CRYPTO transfer operation

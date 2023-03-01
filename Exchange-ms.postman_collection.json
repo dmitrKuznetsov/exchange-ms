@@ -9,92 +9,77 @@
 		{
 			"name": "Register",
 			"request": {
-				"method": "GET",
-				"header": []
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"kuzds@mail.ru\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"register"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Authenticate",
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"kuzds@mail.ru\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/auth/authenticate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"authenticate"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Balance",
 			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "Top up",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "Withdraw",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "Withdraw Crypto",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "Get Exchange Rate",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "Convert",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "Set Exchange Rate",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "Total Money",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "Operation Count",
-			"request": {
 				"auth": {
 					"type": "bearer",
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrdXpkc0BtYWlsLnJ1IiwiaWF0IjoxNjc3NjEwNDA4LCJleHAiOjE2Nzc2OTY4MDh9.Xhi14GFfs7ApJ9-7c4RGud8B5R2VAW5yoKmGYDfzyW0",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrdXpkc0BtYWlsLnJ1IiwiaWF0IjoxNjc3NTk3NTIxLCJleHAiOjE2Nzc2ODM5MjF9.UPSTgg0vdNgWRnpuRVkKlCjaGUsdcu3y3t5IUN5HC9k",
 							"type": "string"
 						}
 					]
@@ -102,7 +87,320 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/v1/admin/operation-count?dateFrom=27:02:2023&dateTo=28:02:2023",
+					"raw": "http://localhost:8080/api/v1/user/balance",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Top up",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrdXpkc0BtYWlsLnJ1IiwiaWF0IjoxNjc3NTk3NTIxLCJleHAiOjE2Nzc2ODM5MjF9.UPSTgg0vdNgWRnpuRVkKlCjaGUsdcu3y3t5IUN5HC9k",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"currency\": \"RUB\",\r\n    \"count\": 310.23\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/user/top-up",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"top-up"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Withdraw",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrdXpkc0BtYWlsLnJ1IiwiaWF0IjoxNjc3NTk3NTIxLCJleHAiOjE2Nzc2ODM5MjF9.UPSTgg0vdNgWRnpuRVkKlCjaGUsdcu3y3t5IUN5HC9k",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"money\": {\r\n        \"currency\": \"RUB\",\r\n        \"count\": 310.23\r\n    },\r\n    \"creditCard\": \"1111 1111 1111 1111\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/user/withdraw",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"withdraw"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Withdraw Crypto",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrdXpkc0BtYWlsLnJ1IiwiaWF0IjoxNjc3NTk3NTIxLCJleHAiOjE2Nzc2ODM5MjF9.UPSTgg0vdNgWRnpuRVkKlCjaGUsdcu3y3t5IUN5HC9k",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"money\": {\r\n        \"currency\": \"RUB\",\r\n        \"count\": 310.23\r\n    },\r\n    \"creditCard\": \"1111 1111 1111 1111\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/user/withdraw-crypto",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"withdraw-crypto"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Convert",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrdXpkc0BtYWlsLnJ1IiwiaWF0IjoxNjc3NTk3NTIxLCJleHAiOjE2Nzc2ODM5MjF9.UPSTgg0vdNgWRnpuRVkKlCjaGUsdcu3y3t5IUN5HC9k",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"moneyFrom\": {\r\n        \"currency\": \"RUB\",\r\n        \"count\": 310.23\r\n    },\r\n    \"currencyTo\": \"TON\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/user/convert",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"convert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Exchange Rate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrdXpkc0BtYWlsLnJ1IiwiaWF0IjoxNjc3NTk3NTIxLCJleHAiOjE2Nzc2ODM5MjF9.UPSTgg0vdNgWRnpuRVkKlCjaGUsdcu3y3t5IUN5HC9k",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/user/exchange-rate?currency=RUB",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"exchange-rate"
+					],
+					"query": [
+						{
+							"key": "currency",
+							"value": "RUB"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ADMIN - Set Exchange Rate",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrdXpkc0BtYWlsLnJ1IiwiaWF0IjoxNjc3NTk3NTIxLCJleHAiOjE2Nzc2ODM5MjF9.UPSTgg0vdNgWRnpuRVkKlCjaGUsdcu3y3t5IUN5HC9k",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"currency\": \"RUB\",\r\n    \"ratesMap\": {\r\n        \"TON\": 0.01,\r\n        \"BTC\": 0.01\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/admin/exchange-rate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"admin",
+						"exchange-rate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ADMIN - Total Money",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrdXpkc0BtYWlsLnJ1IiwiaWF0IjoxNjc3NTk3NTIxLCJleHAiOjE2Nzc2ODM5MjF9.UPSTgg0vdNgWRnpuRVkKlCjaGUsdcu3y3t5IUN5HC9k",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/admin/total-money?currency=RUB",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"admin",
+						"total-money"
+					],
+					"query": [
+						{
+							"key": "currency",
+							"value": "RUB"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ADMIN - Operation Count",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrdXpkc0BtYWlsLnJ1IiwiaWF0IjoxNjc3NjQ4NzExLCJleHAiOjE2Nzc3MzUxMTF9.VPZ2FRQB6sLSljUVxdC8vyhe7rkw7CwXq1GmwJTd6Ow",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/admin/operation-count?dateFrom=27:02:2023&dateTo=01:03:2023",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -121,7 +419,7 @@
 						},
 						{
 							"key": "dateTo",
-							"value": "28:02:2023"
+							"value": "01:03:2023"
 						}
 					]
 				}

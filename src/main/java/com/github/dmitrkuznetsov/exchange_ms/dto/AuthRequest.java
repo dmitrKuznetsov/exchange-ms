@@ -9,9 +9,9 @@ import lombok.*;
 @AllArgsConstructor
 public class AuthRequest {
 
-  @Email(message = "invalid email address")
+  @Email
   private String email;
 
-  @NotBlank(message = "invalid password")
+  @NotBlank
   private String password;
 }

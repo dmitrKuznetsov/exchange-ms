@@ -6,10 +6,11 @@ import com.github.dmitrkuznetsov.exchange_ms.repository.OperationRepository;
 import com.github.dmitrkuznetsov.exchange_ms.repository.entity.Operation;
 import com.github.dmitrkuznetsov.exchange_ms.service.ExchangeService;
 import com.github.dmitrkuznetsov.exchange_ms.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
 
 import static com.github.dmitrkuznetsov.exchange_ms.dto.enums.OperationType.*;
 
@@ -23,11 +24,11 @@ public class UserController {
   private final OperationRepository operationRepository;
 
   @GetMapping("/balance")
-  public List<Money> balance(
+  public Map<Currency, Double> balance(
       @RequestHeader(name = "Authorization") String authHeader
   ) {
 
-    List<Money> balance = userService.getBalance(authHeader);
+    Map<Currency, Double> balance = userService.getBalance(authHeader);
 
     operationRepository.save(new Operation(GET_BALANCE));
 
@@ -35,59 +36,59 @@ public class UserController {
   }
 
   @PostMapping("/top-up")
-  public List<Money> topUp(
+  public Map<Currency, Double> topUp(
       @RequestHeader(name = "Authorization") String authHeader,
-      @RequestBody Money money
+      @RequestBody @Valid Money money
   ) {
 
-    List<Money> moneyList = userService.topUpWallet(authHeader, money);
+    Map<Currency, Double> balance = userService.topUpWallet(authHeader, money);
 
     operationRepository.save(new Operation(TOP_UP));
 
-    return moneyList;
+    return balance;
   }
 
   @PostMapping("/withdraw")
-  public List<Money> withdraw(
+  public Map<Currency, Double> withdraw(
       @RequestHeader(name = "Authorization") String authHeader,
-      @RequestBody WithdrawRequest request
+      @RequestBody @Valid WithdrawRequest request
   ) {
 
-    List<Money> moneyList = userService.withdraw(authHeader, request);
+    Map<Currency, Double> balance = userService.withdraw(authHeader, request);
 
     operationRepository.save(new Operation(WITHDRAW));
 
-    return moneyList;
+    return balance;
   }
 
   @PostMapping("/withdraw-crypto")
-  public List<Money> withdrawCrypto(
+  public Map<Currency, Double> withdrawCrypto(
       @RequestHeader(name = "Authorization") String authHeader,
-      @RequestBody WithdrawCryptoRequest request) {
+      @RequestBody @Valid WithdrawCryptoRequest request) {
 
-    List<Money> moneyList = userService.withdrawCrypto(authHeader, request);
+    Map<Currency, Double> balance = userService.withdrawCrypto(authHeader, request);
 
     operationRepository.save(new Operation(WITHDRAW));
 
-    return moneyList;
+    return balance;
   }
 
   @GetMapping("/exchange-rate")
-  public List<Money> getExchangeRate(
+  public Map<Currency, Double> getExchangeRate(
       @RequestParam("currency") Currency currency
   ) {
 
-    List<Money> moneyList = exchangeService.getRate(currency);
+    Map<Currency, Double> rates = exchangeService.getRate(currency);
 
     operationRepository.save(new Operation(GET_EXCHANGE_RATE));
 
-    return moneyList;
+    return rates;
   }
 
   @PostMapping("/convert")
   public ConvertResponse convert(
       @RequestHeader(name = "Authorization") String authHeader,
-      @RequestBody ConvertRequest request) {
+      @RequestBody @Valid ConvertRequest request) {
 
     ConvertResponse response = userService.convertAndTopUp(authHeader, request);
 

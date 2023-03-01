@@ -5,12 +5,12 @@ import com.github.dmitrkuznetsov.exchange_ms.dto.Money;
 import com.github.dmitrkuznetsov.exchange_ms.dto.SetExchangeRateRequest;
 import com.github.dmitrkuznetsov.exchange_ms.dto.enums.Currency;
 
-import java.util.List;
+import java.util.Map;
 
 public interface ExchangeService {
-  List<Money> getRate(Currency currency);
+  Map<Currency, Double> getRate(Currency currency);
+
+  Map<Currency, Double> setRate(SetExchangeRateRequest request);
 
   Money convert(ConvertRequest request);
-
-  List<Money> setRate(SetExchangeRateRequest request);
 }

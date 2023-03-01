@@ -1,11 +1,11 @@
 package com.github.dmitrkuznetsov.exchange_ms.controller;
 
-import com.github.dmitrkuznetsov.exchange_ms.dto.Money;
 import com.github.dmitrkuznetsov.exchange_ms.dto.OperationCountResponse;
 import com.github.dmitrkuznetsov.exchange_ms.dto.SetExchangeRateRequest;
 import com.github.dmitrkuznetsov.exchange_ms.dto.enums.Currency;
 import com.github.dmitrkuznetsov.exchange_ms.service.ExchangeService;
 import com.github.dmitrkuznetsov.exchange_ms.service.AdminService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/admin")
@@ -24,15 +24,15 @@ public class AdminController {
   private final AdminService adminService;
 
   @PostMapping("/exchange-rate")
-  public List<Money> setExchangeRate(
-      @RequestBody SetExchangeRateRequest request
+  public Map<Currency, Double> setExchangeRate(
+      @RequestBody @Valid SetExchangeRateRequest request
   ) {
 
     return exchangeService.setRate(request);
   }
 
   @GetMapping("/total-money")
-  public Money totalMoney(
+  public Map<Currency, Double> totalMoney(
       @RequestParam("currency") Currency currency
   ) {
 
