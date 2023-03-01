@@ -8,6 +8,7 @@ import com.github.dmitrkuznetsov.exchange_ms.service.AdminService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
 
   private final ExchangeService exchangeService;
@@ -30,6 +32,8 @@ public class AdminController {
 
     return exchangeService.setRate(request);
   }
+
+//  @PreAuthorize("hasRole(Role.ADMIN)")
 
   @GetMapping("/total-money")
   public Map<Currency, Double> totalMoney(

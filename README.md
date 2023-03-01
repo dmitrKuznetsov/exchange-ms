@@ -1,4 +1,4 @@
-# Exchange Microservice
+# Exchange MicroService
 This RESTful has:
 * CRUD operations for orders.
 * PostgreSQL database for persisting data
