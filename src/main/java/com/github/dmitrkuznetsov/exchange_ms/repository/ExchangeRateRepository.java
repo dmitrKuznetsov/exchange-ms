@@ -12,6 +12,5 @@ import java.util.Optional;
 @Repository
 public interface ExchangeRateRepository extends JpaRepository<ExchangeRate, ExchangeRateId> {
   List<ExchangeRate> findAllByIdCurrencyFrom(Currency currencyFrom);
-
   Optional<ExchangeRate> findById(ExchangeRateId exchangeRateId);
 }
