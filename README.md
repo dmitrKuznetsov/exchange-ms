@@ -8,6 +8,8 @@ Features:
 * Docker-compose script for easy database starting
 * Flyway migrations for creating tables and seeding initial data 
 * Validation of requests and informative exception description
+* AOP for exception handling
+* Default OpenApi realisation http://localhost:8080/swagger-ui.html
 
 To get access admin functionality use following data:  
 ```
@@ -18,7 +20,9 @@ To get access admin functionality use following data:
 ```
 
 ## Local development
-First, you need start PostgreSQl using docker-compose script:
+Import postman_collection.json file into your Postman to observe end-points.
+
+Start PostgreSQl using docker-compose script:
 ```bash
 docker-compose -f docker-compose-postgres.yml -p exchange-ms-postgres up -d
 ```
@@ -45,8 +49,8 @@ docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' pg_c
 - PostgreSQL database
 - Flyway database migration tool
 - Spring Validation
+- Springdoc OpenApi
 
 # ToDo
-- OpenAPI
 - Integration testing for service layer
 - Spring Email for registration confirmation
