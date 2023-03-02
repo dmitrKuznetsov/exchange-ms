@@ -9,7 +9,8 @@ Features:
 * Flyway migrations for creating tables and seeding initial data 
 * Validation of requests and informative exception description
 * AOP for exception handling
-* Default OpenApi realisation http://localhost:8080/swagger-ui.html
+* Bare OpenApi: http://localhost:8080/swagger-ui.html
+* Unit and integration testing for services and repositories 
 
 To get access admin functionality use following data:  
 ```
@@ -52,5 +53,4 @@ docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' pg_c
 - Springdoc OpenApi
 
 # ToDo
-- Integration testing for service layer
 - Spring Email for registration confirmation
